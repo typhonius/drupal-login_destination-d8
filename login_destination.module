@@ -30,83 +30,6 @@ function login_destination_help($path, $arg) {
 }
 
 /**
- * Implements hook_menu().
- */
-function login_destination_menu() {
-  $items['admin/config/people/login-destination'] = array(
-    'title' => 'Login destinations',
-    'description' => 'Customize the destination that the user is redirected to after login.',
-    'page callback' => 'login_destination_overview',
-    'access arguments' => array('administer users'),
-    'file' => 'login_destination.admin.inc',
-    'weight' => 10,
-  );
-  $items['admin/config/people/login-destination/add'] = array(
-    'title' => 'Add login destination rule',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('login_destination_edit_form'),
-    'access arguments' => array('administer users'),
-    'type' => MENU_LOCAL_ACTION,
-    'weight' => 1,
-    'file' => 'login_destination.admin.inc',
-  );
-  $items['admin/config/people/login-destination/edit/%login_destination'] = array(
-    'title' => 'Edit login destination rule',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('login_destination_edit_form', 5),
-    'access arguments' => array('administer users'),
-    'file' => 'login_destination.admin.inc',
-  );
-  $items['admin/config/people/login-destination/delete/%login_destination'] = array(
-    'title' => 'Delete login destination rule',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('login_destination_delete_form', 5),
-    'access arguments' => array('administer users'),
-    'file' => 'login_destination.admin.inc',
-  );
-  $items['admin/config/people/login-destination/list'] = array(
-    'title' => 'List',
-    'type' => MENU_DEFAULT_LOCAL_TASK,
-    'weight' => -10,
-  );
-  $items['admin/config/people/login-destination/settings'] = array(
-    'title' => 'Settings',
-    'description' => 'Change Login Destination settings.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('login_destination_settings'),
-    'access arguments' => array('administer users'),
-    'type' => MENU_LOCAL_TASK,
-    'file' => 'login_destination.admin.inc',
-    'weight' => 10,
-  );
-
-  return $items;
-}
-
-/**
- * Load a login destination.
- */
-function login_destination_load($id) {
-  $result = db_select('login_destination', 'l')
-    ->fields('l')
-    ->condition('id', $id)
-    ->execute()
-    ->fetchAssoc();
-
-  $result['triggers'] = unserialize($result['triggers']);
-  if (empty($result['triggers'])) {
-    $result['triggers'] = array();
-  }
-
-  $result['roles'] = unserialize($result['roles']);
-  if (empty($result['roles'])) {
-    $result['roles'] = array();
-  }
-  
-  return $result;
-}
-
-/**
  * Implements hook_theme
  */
 function login_destination_theme() {
@@ -187,14 +110,14 @@ function login_destination_validate($form, &$form_state) {
       }
       break;
   }
-  
+
   // Fix the current page in case of 403 page.
   if ($form['#form_id'] == 'user_login') {
     if(drupal_get_http_header('Status') == '403 Forbidden') {
       $_GET['current'] = $_GET['destination'];
     }
   }
-    
+
 }
 
 /**
@@ -501,4 +424,11 @@ function _login_destination_evaluate_rule($rule, $trigger = '') {
     // PHP code and PHP filter disabled.
     return FALSE;
   }
+}
+
+/**
+ * Load a login destination.
+ */
+function login_destination_load($id) {
+  return entity_load('login_destination', $id);
 }

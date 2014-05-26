@@ -1,0 +1,10 @@
+login_destination.settings:
+  type: mapping
+  label: 'Login destination settings'
+  mapping:
+    login_destination_preserve_destination:
+      type: boolean
+      label: 'Login destination preserve destination'
+    login_destination_immediate_redirect:
+      type: boolean
+      label: 'Login destination immediate redirect'

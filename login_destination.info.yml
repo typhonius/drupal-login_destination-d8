@@ -1,0 +1,7 @@
+name: Login Destination
+type: module
+description: 'Customize the destination that the user is redirected to after login.'
+core: 8.x
+dependencies:
+  - php
+configure: login_destination.list
