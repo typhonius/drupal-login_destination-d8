@@ -11,11 +11,10 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\login_destination\LoginDestinationInterface;
 
 /**
- *  @EntityType(
+ *  @ConfigEntityType(
  *   id = "login_destination",
  *   label = @Translation("Login Destination"),
  *   controllers = {
- *     "storage" = "Drupal\Core\Config\Entity\ConfigStorageController",
  *     "list" = "Drupal\login_destination\Controller\LoginDestinationListController",
  *     "form" = {
  *       "add" = "Drupal\login_destination\Form\LoginDestinationFormController",
