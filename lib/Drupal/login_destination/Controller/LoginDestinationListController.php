@@ -6,14 +6,14 @@
 
 namespace Drupal\login_destination\Controller;
 
-use Drupal\Core\Config\Entity\ConfigEntityListController;
+use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\login_destination\Entity\LoginDestination;
 
 /**
  * Provides a listing of Foo Bar.
  */
-class LoginDestinationListController extends ConfigEntityListController {
+class LoginDestinationListController extends ConfigEntityListBuilder {
 
   /**
    * Builds the header row for the entity listing.
@@ -57,41 +57,4 @@ class LoginDestinationListController extends ConfigEntityListController {
     return $row + parent::buildRow($entity);
   }
 
-  /**
-   * Provides an array of information to build a list of operation links.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   The entity the operations are for.
-   *
-   * @return array
-   *   An associative array of operation link data for this list, keyed by
-   *   operation name, containing the following key-value pairs:
-   *   - title: The localized title of the operation.
-   *   - href: The path for the operation.
-   *   - options: An array of URL options for the path.
-   *   - weight: The weight of this operation.
-   */
-  public function getOperations(EntityInterface $entity) {
-    $uri = $entity->uri();
-
-    $operations = array();
-    if ($entity->access('update')) {
-      $operations['edit'] = array(
-        'title' => t('Edit'),
-        'href' =>  'admin/config/people/login-destination/' . $entity->id() . '/edit',
-        'options' => $uri['options'],
-        'weight' => 10,
-      );
-    }
-    if ($entity->access('delete')) {
-      $operations['delete'] = array(
-        'title' => t('Delete'),
-        'href' => 'admin/config/people/login-destination/' . $entity->id() . '/delete',
-        'options' => $uri['options'],
-        'weight' => 100,
-      );
-    }
-
-    return $operations;
-  }
 }

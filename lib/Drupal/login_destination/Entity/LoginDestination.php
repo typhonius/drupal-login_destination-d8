@@ -15,7 +15,7 @@ use Drupal\login_destination\LoginDestinationInterface;
  *   id = "login_destination",
  *   label = @Translation("Login Destination"),
  *   controllers = {
- *     "list" = "Drupal\login_destination\Controller\LoginDestinationListController",
+ *     "list_builder" = "Drupal\login_destination\Controller\LoginDestinationListController",
  *     "form" = {
  *       "add" = "Drupal\login_destination\Form\LoginDestinationFormController",
  *       "edit" = "Drupal\login_destination\Form\LoginDestinationFormController",
@@ -29,7 +29,8 @@ use Drupal\login_destination\LoginDestinationInterface;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "edit-form" = "admin/config/people/login-destination/edit/{login_destination}"
+ *     "edit-form" = "login_destination.edit",
+ *     "delete-form" = "login_destination.delete",
  *   }
  * )
  */
