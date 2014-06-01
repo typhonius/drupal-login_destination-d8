@@ -36,6 +36,17 @@ use Drupal\login_destination\LoginDestinationInterface;
  */
 class LoginDestination extends ConfigEntityBase implements LoginDestinationInterface {
 
+  const LOGIN_DESTINATION_REDIRECT_NOTLISTED = 0;
+
+  const LOGIN_DESTINATION_REDIRECT_LISTED = 1;
+
+  /**
+   * The Login Destination machine name.
+   *
+   * @var string
+   */
+  public $name;
+
   /**
    * The Login Destination ID.
    *
@@ -69,7 +80,7 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
    *
    * @var int
    */
-  public $pages_type = LOGIN_DESTINATION_REDIRECT_NOTLISTED;
+  public $pages_type = self::LOGIN_DESTINATION_REDIRECT_NOTLISTED;
 
   /**
    * The Login Destination pages.
@@ -100,18 +111,11 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
   public $weight = 0;
 
   /**
-   * The Login Destination machine name.
-   *
-   * @var string
-   */
-  public $name;
-
-  /**
    * View triggers option.
    * @return bool|\Drupal\Component\Utility\mixte|FALSE|string
    */
   public function viewTriggers(){
-    return $this->renderItemList($this->triggers, 'All triggers');
+    return $this->renderItemList($this->triggers, t('All triggers'));
   }
 
   /**
@@ -119,7 +123,7 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
    * @return bool|\Drupal\Component\Utility\mixte|FALSE|string
    */
   public function viewRoles(){
-    return $this->renderItemList($this->roles, 'All roles');
+    return $this->renderItemList($this->roles, t('All roles'));
   }
 
   /**
@@ -129,14 +133,10 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
   public function viewPages(){
     $type = $this->pages_type;
 
-    if ($type == LOGIN_DESTINATION_REDIRECT_PHP) {
-      return nl2br(check_plain($this->pages));
-    }
-
     $pages = trim($this->pages);
 
     if (empty($pages)) {
-      if ($type == LOGIN_DESTINATION_REDIRECT_NOTLISTED) {
+      if ($type == self::LOGIN_DESTINATION_REDIRECT_NOTLISTED) {
         return t('All pages');
       }
       else {
@@ -148,7 +148,7 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
 
     $items = array();
     foreach ($pages as &$page) {
-      if ($type == LOGIN_DESTINATION_REDIRECT_NOTLISTED) {
+      if ($type == self::LOGIN_DESTINATION_REDIRECT_NOTLISTED) {
         $items[] = "~ " . $page;
       }
       else{
@@ -156,7 +156,12 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
       }
     }
 
-    return theme_item_list(array('items' => $items, 'title' => '', 'list_type' => 'ul', 'attributes' => array(),));
+    $list = array(
+      '#type' => 'list',
+      '#options' => $items,
+    );
+
+    return drupal_render($list);
   }
 
   /**
@@ -180,21 +185,21 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
    * @return bool|\Drupal\Component\Utility\mixte|FALSE|string
    */
   protected function renderItemList($array, $empty_message){
-    foreach($array as $key => $value){
-      if(!empty($value))
-        $items[$key] = check_plain($value);
+    foreach($array as $value){
+      if (!empty($value)) {
+        $items[] = check_plain($value);
+      }
     }
 
     if(empty($items))
-      return t($empty_message);
+      return $empty_message;
     else{
       $item_list = array(
-        'items' => $items,
-        'title' => '',
-        'list_type' => 'ul',
-        'attributes' => array(),
+        '#theme' => 'item_list',
+        '#items' => $items,
+        '#list_type' => 'ul',
       );
-      return theme_item_list($item_list);
+      return (drupal_render($item_list));
     }
   }
 }
