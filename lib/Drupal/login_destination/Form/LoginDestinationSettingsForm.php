@@ -32,7 +32,7 @@ class LoginDestinationSettingsForm extends ConfigFormBase {
    *   The form structure.
    */
   public function buildForm(array $form, array &$form_state) {
-    $config = $this->configFactory->get('login_destination.settings');
+    $config = $this->config('login_destination.settings');
     $form['settings']['login_destination_preserve_destination'] = array(
       '#type' => 'checkbox',
       '#default_value' => $config->get('login_destination_preserve_destination'),
@@ -58,7 +58,7 @@ class LoginDestinationSettingsForm extends ConfigFormBase {
    *   An associative array containing the current state of the form.
    */
   public function submitForm(array &$form, array &$form_state) {
-    $this->configFactory->get('login_destination.settings')
+    $this->config('login_destination.settings')
       ->set('login_destination_preserve_destination', $form_state['values']['login_destination_preserve_destination'])
       ->set('login_destination_immediate_redirect', $form_state['values']['login_destination_immediate_redirect'])
       ->save();
