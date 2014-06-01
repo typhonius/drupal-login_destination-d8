@@ -27,30 +27,6 @@ function login_destination_help($route_name, Request $request) {
 }
 
 /**
- * Implements hook_theme
- */
-function login_destination_theme() {
-  return array(
-    'login_destination_destination' => array(
-      'variables' => array('destination' => NULL),
-      'file' => 'login_destination.admin.inc',
-    ),
-    'login_destination_pages' => array(
-      'variables' => array('pages' => NULL, 'pages_type' => 0),
-      'file' => 'login_destination.admin.inc',
-    ),
-    'login_destination_triggers' => array(
-      'variables' => array('items' => NULL),
-      'file' => 'login_destination.admin.inc',
-    ),
-    'login_destination_roles' => array(
-      'variables' => array('items' => NULL),
-      'file' => 'login_destination.admin.inc',
-    ),
-  );
-}
-
-/**
  * Implements hook_form_alter
  */
 function login_destination_form_alter(&$form, &$form_state, $form_id) {
