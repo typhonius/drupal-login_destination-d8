@@ -6,69 +6,6 @@
  */
 
 /**
- * Implements hook_schema().
- */
-function login_destination_schema() {
-  $schema['login_destination'] = array(
-    'description' => 'Login Destination rules.',
-    'fields' => array(
-      'id' => array(
-        'type' => 'serial',
-        'unsigned' => TRUE,
-        'not null' => TRUE,
-        'description' => 'Primary Key: Unique ID.',
-      ),
-      'triggers' => array(
-        'type' => 'text',
-        'not null' => TRUE,
-        'description' => 'Triggers on which to perform redirect',
-      ),
-      'roles' => array(
-        'type' => 'text',
-        'not null' => TRUE,
-        'description' => 'Roles to perform redirect for',
-      ),
-      'pages_type' => array(
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-        'size' => 'tiny',
-        'description' => 'Flag to indicate from which pages to redirect. (0 = all pages except listed pages, 1 = only listed pages, 2 = Use custom PHP code)',
-      ),
-      'pages' => array(
-        'type' => 'text',
-        'not null' => TRUE,
-        'description' => 'Pages from which to redirect',
-      ),
-      'destination_type' => array(
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-        'size' => 'tiny',
-        'description' => 'Flag to indicate the destination type. (0 = static URL, 1 = PHP code)',
-      ),
-      'destination' => array(
-        'type' => 'text',
-        'not null' => TRUE,
-        'description' => 'Redirect destination',
-      ),
-      'weight' => array(
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-        'description' => "The rule's weight.",
-      ),
-    ),
-    'primary key' => array('id'),
-    'indexes' => array(
-      'list' => array('weight'),
-    ),
-  );
-
-  return $schema;
-}
-
-/**
  * Implementation of hook_install().
  */
 function login_destination_install() {
