@@ -7,6 +7,7 @@
 
 namespace Drupal\login_destination\Entity;
 
+use Drupal\Component\Utility\String;
 use Drupal\Core\Config\Entity\ConfigEntityBase;
 use Drupal\login_destination\LoginDestinationInterface;
 
@@ -26,7 +27,9 @@ use Drupal\login_destination\LoginDestinationInterface;
  *   admin_permission = "administer users",
  *   entity_keys = {
  *     "id" = "id",
- *     "uuid" = "uuid"
+ *     "uuid" = "uuid",
+ *     "label" = "name",
+ *     "weight" = "weight"
  *   },
  *   links = {
  *     "edit-form" = "login_destination.edit",
@@ -94,7 +97,7 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
    *
    * @var int
    */
-  public $destination_type = LOGIN_DESTINATION_STATIC;
+// @TODO  public $destination_type = LOGIN_DESTINATION_STATIC;
 
   /**
    * The Login Destination destination.
@@ -110,9 +113,33 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
    */
   public $weight = 0;
 
+  public function getDestinationType() {
+    return $this->destination_type;
+  }
+
+  public function getName() {
+    return $this->name;
+  }
+
+  public function getDestination() {
+    return $this->destination;
+  }
+
+  public function getPagesType() {
+    return $this->pages_type;
+  }
+
+  public function getPages() {
+    return $this->pages;
+  }
+
+  public function getWeight() {
+    return $this->weight;
+  }
+
   /**
    * View triggers option.
-   * @return bool|\Drupal\Component\Utility\mixte|FALSE|string
+   * @return bool|FALSE|mixed|string
    */
   public function viewTriggers(){
     return $this->renderItemList($this->triggers, t('All triggers'));
@@ -120,15 +147,14 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
 
   /**
    * View roles list.
-   * @return bool|\Drupal\Component\Utility\mixte|FALSE|string
+   * @return bool|FALSE|mixed|string
    */
   public function viewRoles(){
     return $this->renderItemList($this->roles, t('All roles'));
   }
 
   /**
-   * View pages
-   * @return bool|\Drupal\Component\Utility\mixte|FALSE|mixed|string
+   * @return bool|FALSE|mixed|string
    */
   public function viewPages(){
     $type = $this->pages_type;
@@ -144,10 +170,9 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
       }
     }
 
-    $pages = explode("\n", preg_replace('/\r/', '', check_plain($this->pages)));
-
+    $pages = explode("\n", preg_replace('/\r/', '', $this->pages));
     $items = array();
-    foreach ($pages as &$page) {
+    foreach ($pages as $page) {
       if ($type == self::LOGIN_DESTINATION_REDIRECT_NOTLISTED) {
         $items[] = "~ " . $page;
       }
@@ -156,20 +181,16 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
       }
     }
 
-    $list = array(
-      '#type' => 'list',
-      '#options' => $items,
-    );
+    return $this->renderItemList($items, t('Empty'));
 
-    return drupal_render($list);
   }
 
   /**
-   * View destination list.
-   * @return bool|\Drupal\Component\Utility\mixte|FALSE|mixed|string
+   * Generates the destination of a login destination
+   * @return bool|FALSE|mixed|string
    */
   public function viewDestination(){
-    $output = nl2br(check_plain($this->destination));
+    $output = nl2br(String::checkPlain($this->destination));
 
     if (empty($output)) {
       $output = t('Empty');
@@ -182,12 +203,12 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
    * Render item list.
    * @param $array
    * @param $empty_message
-   * @return bool|\Drupal\Component\Utility\mixte|FALSE|string
+   * @return bool|FALSE|mixed|string
    */
   protected function renderItemList($array, $empty_message){
     foreach($array as $value){
       if (!empty($value)) {
-        $items[] = check_plain($value);
+        $items[] = String::checkPlain($value);
       }
     }
 

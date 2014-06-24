@@ -8,7 +8,9 @@ login_destination.settings:
 login_destination.list:
   path: admin/config/people/login-destination
   defaults:
-    _entity_list: login_destination
+    _content: '\Drupal\Core\Entity\Controller\EntityListController::listing'
+    entity_type: 'login_destination'
+    _title: 'Login destinations'
   requirements:
     _permission: 'administer users'
 
@@ -16,6 +18,7 @@ login_destination.add:
   path: admin/config/people/login-destination/add
   defaults:
     _entity_form: login_destination.add
+    _title: 'Add login destination rule'
   requirements:
     _permission: 'administer users'
 
@@ -23,6 +26,7 @@ login_destination.edit:
   path: 'admin/config/people/login-destination/{login_destination}/edit'
   defaults:
     _entity_form: login_destination.edit
+    _title: 'Edit login destination rule'
   requirements:
     _permission: 'administer users'
 
@@ -30,5 +34,6 @@ login_destination.delete:
   path: 'admin/config/people/login-destination/{login_destination}/delete'
   defaults:
     _entity_form: login_destination.delete
+    _title: 'Delete login destination rule'
   requirements:
     _permission: 'administer users'

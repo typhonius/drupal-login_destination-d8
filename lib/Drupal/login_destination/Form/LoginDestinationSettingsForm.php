@@ -33,15 +33,15 @@ class LoginDestinationSettingsForm extends ConfigFormBase {
    */
   public function buildForm(array $form, array &$form_state) {
     $config = $this->config('login_destination.settings');
-    $form['settings']['login_destination_preserve_destination'] = array(
+    $form['settings']['preserve_destination'] = array(
       '#type' => 'checkbox',
-      '#default_value' => $config->get('login_destination_preserve_destination'),
+      '#default_value' => $config->get('preserve_destination'),
       '#title' => t('Preserve the destination parameter'),
       '#description' => t("The 'destination' GET parameter will have priority over the settings of this module. With this setting enabled, redirect from the user login block will not work."),
     );
-    $form['settings']['login_destination_immediate_redirect'] = array(
+    $form['settings']['immediate_redirect'] = array(
       '#type' => 'checkbox',
-      '#default_value' => $config->get('login_destination_immediate_redirect'),
+      '#default_value' => $config->get('immediate_redirect'),
       '#title' => t('Redirect immediately after using one-time login link'),
       '#description' => t("User will be redirected before given the possibility to change their password."),
     );
@@ -59,8 +59,8 @@ class LoginDestinationSettingsForm extends ConfigFormBase {
    */
   public function submitForm(array &$form, array &$form_state) {
     $this->config('login_destination.settings')
-      ->set('login_destination_preserve_destination', $form_state['values']['login_destination_preserve_destination'])
-      ->set('login_destination_immediate_redirect', $form_state['values']['login_destination_immediate_redirect'])
+      ->set('preserve_destination', $form_state['values']['preserve_destination'])
+      ->set('immediate_redirect', $form_state['values']['immediate_redirect'])
       ->save();
 
     parent::submitForm($form, $form_state);
