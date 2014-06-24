@@ -2,4 +2,4 @@ name: Login Destination
 type: module
 description: 'Customize the destination that the user is redirected to after login.'
 core: 8.x
-configure: login_destination.list
+configure: login_destination.settings

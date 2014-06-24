@@ -11,8 +11,6 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
 
 interface LoginDestinationInterface extends ConfigEntityInterface {
 
-  public function getDestinationType();
-
   public function getName();
 
   public function getDestination();

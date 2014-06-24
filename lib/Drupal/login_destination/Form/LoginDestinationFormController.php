@@ -17,8 +17,6 @@ class LoginDestinationFormController extends EntityForm {
   public function form(array $form, array &$form_state) {
     $login_destination = $this->entity;
 
-    $type = $login_destination->getDestinationType();
-
     $form['name'] = array(
       '#title' => $this->t('Description'),
       '#type' => 'textfield',

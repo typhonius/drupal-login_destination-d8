@@ -113,10 +113,6 @@ class LoginDestination extends ConfigEntityBase implements LoginDestinationInter
    */
   public $weight = 0;
 
-  public function getDestinationType() {
-    return $this->destination_type;
-  }
-
   public function getName() {
     return $this->name;
   }
